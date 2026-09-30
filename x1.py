@@ -5,11 +5,9 @@ import telebot
 
 TOKEN = os.getenv('TOKEN')  # Токен возьмем из настроек Render (безопасно)
 
-TEXT_LOVE = (
-    "я тоже тебя очень сильно люблю мышонок."
-)
+TEXT_LOVE = "я тоже тебя очень сильно люблю мышонок."
 TEXT_MISS = "я тоже очень сильно скучаю мышонок, наверное я сейчас занят ну или как обычно сплю, но знай я тебя очень очень люблю и скучаю"
-
+TEXT_SAD = 'не грусти мышонок я всегда рядом давай посмотрим рик и морти?)'
 bot = telebot.TeleBot(TOKEN)
 
 # --- МИНИ-СЕРВЕР ЧТОБЫ БОТ НЕ ЗАСЫПАЛ ---
@@ -37,7 +35,8 @@ def send_welcome(message):
     text = (
         "Приветик мышонок напиши сюда вот эти фразы)\n"
         "👉 я тебя люблю\n"
-        "👉 я скучаю"
+        "👉 я скучаю\n"
+        "👉 мне грустно"
     )
     bot.send_message(message.chat.id, text)
 
@@ -53,6 +52,9 @@ def love_reply(message):
 def miss_reply(message):
     bot.reply_to(message, TEXT_MISS)
 
+@bot.message_handler(func=lambda message: 'мне грустно' in message.text.lower())
+def miss_reply(message):
+    bot.reply_to(message, TEXT_SAD)
 
 if __name__ == '__main__':
     keep_alive()  # Запускаем мини-сервер в фоне
